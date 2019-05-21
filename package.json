@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/hackerboydotcom/hiweb-vue-base-storefront/issues"
   },
-  "homepage": "https://github.com/hackerboydotcom/hiweb-vue-base-storefront#readme"
+  "homepage": "https://github.com/hackerboydotcom/hiweb-vue-base-storefront#readme",
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
 }

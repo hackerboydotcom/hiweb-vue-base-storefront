@@ -1,0 +1,236 @@
+import cookie from '@/helpers/cookie';
+import api from '@/helpers/api';
+
+import JsonApi from '@/helpers/JsonApi';
+
+class Cart {
+
+  constructor(store) {
+    this.store = store;
+  }
+
+  id() {
+    return process.env.NODE_ENV === 'development' ? 'fe221020-2dae-418f-a0b8-84b17bbe8dea' : cookie.getCookie('cart-id');
+  }
+
+  get() {
+
+    return new Promise(async (resolve, reject) => {
+
+      // Loading cart
+      this.store.commit('loadingCart', true);
+
+      let cartId = this.id();
+
+      if (!cartId) {
+        this.store.commit('loadingCart', false);
+        return resolve(null);
+      }
+
+      // Load cart
+      let error = false;
+      let cart = await api.get('carts/' + cartId, {}, true).catch(e => {
+        error = true;
+      });
+
+      if (error) {
+
+        // Remove cart id
+        cookie.setCookie('cart-id', '', -1);
+
+        this.store.commit('loadingCart', false);
+        return resolve(false);
+      }
+
+      // Save to store
+      this.store.commit('cart', cart.data);
+
+      this.store.commit('loadingCart', false);
+      return resolve(cart.data);
+
+    });
+
+
+  }
+
+  /**
+  * Add item to cart
+  */
+  async add(variantId, qty) {
+
+    return new Promise(async (resolve, reject) => {
+
+      // Loading cart
+      this.store.commit('loadingCart', true);
+
+      // If doesn't have cart
+      let cart;
+      let cartJsonApi
+      if (!this.id()) {
+
+        // Cart
+        cart = await this.create();
+        cartJsonApi = new JsonApi(cart);
+
+      } else if (!this.store.state.cart) {
+
+        let loadCart = await this.get();
+
+        if (!loadCart) {
+          return this.add(variantId, qty);
+        }
+
+        cart = this.store.state.cart;
+        cartJsonApi = this.store.state.cartJsonApi;
+
+      } else {
+        cart = this.store.state.cart;
+        cartJsonApi = this.store.state.cartJsonApi;
+      }
+
+
+
+      // Find in current cart to see if already existed
+      let cartItems = cartJsonApi.findRelationshipResources(cart.data, 'cart_items');
+
+      if (cartItems && cartItems.length) {
+
+        for (let i = 0; i < cartItems.length; i++) {
+
+          if (variantId === cartItems[i].attributes.variant_id) {
+
+            // Do a patch request
+            let cartItem = await api.patch('cart_items/' + cartItems[i].id, {
+              data: {
+                type: 'cart_items',
+                attributes: {
+                  quantity: qty
+                }
+              }
+            }).catch(error => {
+
+              let response = error.statusText;
+
+              if (typeof response === 'string') {
+                response = JSON.parse(response);
+              }
+
+              alert(typeof response.errors === 'undefined' ? error.message : response.errors[0].title);
+              return reject(null);
+            });
+
+            // Reload cart
+            this.get();
+
+            return resolve(cartItem.data);
+          }
+
+        }
+
+      }
+
+      // Create new item
+      let cartItem = await api.post('cart_items', {
+        data: {
+          type: 'cart_items',
+          attributes: {
+            cart_id: cart.data.id,
+            variant_id: variantId,
+            quantity: qty
+          }
+        }
+      }).catch(error => {
+        alert(typeof error.response === 'undefined' ? error.message : error.response.data.errors[0].title);
+        return resolve(null);
+      });;
+
+      // Reload cart
+      this.get();
+
+      return resolve(cartItem.data);
+
+    });
+
+  }
+
+  /**
+  * Create cart
+  */
+  create() {
+
+    return new Promise(async (resolve, reject) => {
+
+      let cart = await api.post('carts').catch(e => {
+        return reject(e);
+      });
+
+      // Set cookie
+      cookie.setCookie('cart-id', cart.data.data.id);
+
+      return resolve(cart.data);
+
+    });
+
+  }
+
+  /**
+  * Update cart
+  */
+  update(data) {
+
+    return new Promise(async (resolve, reject) => {
+
+      // Loading cart
+      this.store.commit('loadingCart', true);
+
+      if (!cookie.getCookie('cart-id')) {
+        await this.create();
+      }
+
+      let cart = await api.patch('carts/' + cookie.getCookie('cart-id'), {
+        data: {
+          type: 'carts',
+          id: cookie.getCookie('cart-id'),
+          attributes: data
+        }
+      }).catch(e => {
+
+        // Stop loading cart
+        this.store.commit('loadingCart', false);
+
+        return reject(e);
+      });
+
+      // Reload cart
+      this.get();
+
+      return resolve(cart.data);
+
+    });
+
+  }
+
+  async delete(removeId) {
+
+    // Cart loading
+    this.store.commit('loadingCart', true);
+
+    await api.delete('cart_items/' + removeId);
+
+    // Reload cart
+    this.get();
+
+    return true;
+  }
+
+  subTotalPrice() {
+    return this.store.state.cart.data.attributes.subtotal;
+  }
+
+  totalPrice() {
+    return this.store.state.cart.data.attributes.total;
+  }
+
+}
+
+export default new Cart();
