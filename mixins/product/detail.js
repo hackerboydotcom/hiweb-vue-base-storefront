@@ -16,6 +16,7 @@ export default {
       addingToCart: false,
 
       error: null,
+      isLoading: false,
 
     };
 
@@ -130,6 +131,7 @@ export default {
       this.activeVariantId = null;
       this.activeVariant = null;
       this.error = null;
+      this.isLoading = true;
 
       // If cache exists
       let cacheKey = 'products/' + this.slug + JSON.stringify({ shop_id: (typeof window.shop !== 'undefined' ? window.shop.id : '') });
@@ -172,6 +174,8 @@ export default {
 
       // Set active variant
       this.setActiveVariant();
+
+      this.isLoading = false;
 
     },
 
