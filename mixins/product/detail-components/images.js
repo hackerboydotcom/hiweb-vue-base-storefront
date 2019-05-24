@@ -1,5 +1,3 @@
-import imageHelper from '@/helpers/image';
-
 export default {
 
   props: {
@@ -32,7 +30,6 @@ export default {
   data() {
 
     return {
-      imageHelper,
       activeImageId: null,
     };
 

@@ -1,5 +1,3 @@
-import api from '@/helpers/api';
-
 export default {
 
   props: ['option', 'showAllOptions', 'optionValues', 'activeVariant'],
@@ -176,7 +174,7 @@ export default {
           return resolve(null)
         }
 
-        api.get('option_guides/' + this.option.attributes.option_guide_id).then(response => {
+        this.$hiwebBase.api.get('option_guides/' + this.option.attributes.option_guide_id).then(response => {
           return resolve(response.data.data);
         }).catch(error => {
           return reject(error);

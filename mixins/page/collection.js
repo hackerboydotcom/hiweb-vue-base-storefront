@@ -1,8 +1,3 @@
-import api from '@/helpers/api';
-import JsonApi from '@/helpers/JsonApi';
-import imageHelper from '@/helpers/image';
-import seoHelper from '@/helpers/seo';
-
 export default {
 
   data() {
@@ -11,7 +6,6 @@ export default {
       pagesJsonApi: null,
       isLoading: false,
       pageLimit: 20,
-      imageHelper
     }
 
   },
@@ -20,7 +14,7 @@ export default {
 
     this.loadPages();
 
-    seoHelper.setTitle('Pages');
+    this.$hiwebBase.seo.setTitle('Pages');
 
   },
 
@@ -40,13 +34,16 @@ export default {
         query.page = this.page;
       }
 
-      api.get('pages', query).then(response => {
+      this.$hiwebBase.api.get('pages', query).then(response => {
 
         this.isLoading = false;
 
         if (typeof response.data.data !== 'undefined') {
-          this.pagesJsonApi = new JsonApi(response.data);
+          this.pagesJsonApi = new this.$hiwebBase.JsonApi(response.data);
         }
+
+        // Dispatch global event
+        window.dispatchEvent(new CustomEvent('view-page-collection', this.pagesJsonApi));
 
       }).catch(error => {
         this.isLoading = false;

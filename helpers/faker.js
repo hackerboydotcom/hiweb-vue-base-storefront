@@ -9,40 +9,37 @@ class Faker {
 
         // Get products
         if (path === 'products') {
-          let data = await import('@/fake-data/products.js');
+          let data = await import('../fake-data/products.js');
           return resolve(data.default);
         }
 
         // Get single product
-        if (path === 'products/another-product') {
-          let data = await import('@/fake-data/product-1.js');
+        if (path.includes('products/')) {
+          let data = await import('../fake-data/product-' + (Math.random() < 0.5 ? 1 : 2) + '.js');
           return resolve(data.default);
-        } else if (path === 'products/demo-product') {
-          let data = await import('@/fake-data/product-2.js');
-          return resolve(data.default);
-        }
+        } 
 
         // Get collections
         if (path === 'collections') {
-          let data = await import('@/fake-data/collections.js');
+          let data = await import('../fake-data/collections.js');
           return resolve(data.default);
         }
 
         // Get cart
         if (path.includes('carts')) {
-          let data = await import('@/fake-data/carts.js');
+          let data = await import('../fake-data/carts.js');
           return resolve(data.default);
         }
 
         // Get pages
         if (path === 'pages') {
-          let data = await import('@/fake-data/pages.js');
+          let data = await import('../fake-data/pages.js');
           return resolve(data.default);
         }
 
         // Get page
         if (path.includes('pages/')) {
-          let data = await import('@/fake-data/page.js');
+          let data = await import('../fake-data/page.js');
           return resolve(data.default);
         }
       }
@@ -52,13 +49,13 @@ class Faker {
 
         // Create cart
         if (path.includes('carts')) {
-          let data = await import('@/fake-data/carts.js');
+          let data = await import('../fake-data/carts.js');
           return resolve(data.default);
         }
 
         // Cart item
         if (path === 'cart_items') {
-          let data = await import('@/fake-data/post-cart-items.js');
+          let data = await import('../fake-data/post-cart-items.js');
           return resolve(data.default);
         }
 
@@ -69,7 +66,7 @@ class Faker {
 
         // Update cart item
         if (path.includes('cart_items/')) {
-          let data = await import('@/fake-data/post-cart-items.js');
+          let data = await import('../fake-data/post-cart-items.js');
           return resolve(data.default);
         }
 
@@ -81,7 +78,7 @@ class Faker {
         // Delete cart item
         // Update cart item
         if (path.includes('cart_items')) {
-          let data = await import('@/fake-data/post-cart-items.js');
+          let data = await import('../fake-data/post-cart-items.js');
           return resolve(data.default);
         }
 

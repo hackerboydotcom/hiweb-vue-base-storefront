@@ -1,7 +1,3 @@
-import api from '@/helpers/api';
-import JsonApi from '@/helpers/JsonApi';
-import seoHelper from '@/helpers/seo';
-
 export default {
 
   props: ['slug'],
@@ -25,16 +21,19 @@ export default {
 
       this.isLoading = true;
 
-      api.get('pages/' + this.slug).then(response => {
+      this.$hiwebBase.api.get('pages/' + this.slug).then(response => {
 
         // Json api data
-        this.pageJsonApi = new JsonApi(response.data);
+        this.pageJsonApi = new this.$hiwebBase.JsonApi(response.data);
 
         // SEO Helper
-        seoHelper.setTitle(response.data.data.attributes.title);
-        seoHelper.setDescription(response.data.data.attributes.description);
+        this.$hiwebBase.seo.setTitle(response.data.data.attributes.title);
+        this.$hiwebBase.seo.setDescription(response.data.data.attributes.description);
 
         this.isLoading = false;
+
+        // Dispatch global event
+        window.dispatchEvent(new CustomEvent('view-page-detail', this.pageJsonApi));
 
       }).catch(error => {
         this.isLoading = false;

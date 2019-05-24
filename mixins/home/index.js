@@ -1,8 +1,3 @@
-import api from '@/helpers/api';
-
-import JsonApi from '@/helpers/JsonApi';
-import seoHelper from '@/helpers/seo';
-
 export default {
 
   data() {
@@ -18,11 +13,15 @@ export default {
 
   created() {
     this.loadProducts();
+
+    // Dispatch global event
+    window.dispatchEvent(new CustomEvent('view-home-index'));
+
   },
 
   mounted() {
-    seoHelper.setTitle(process.env.NODE_ENV === 'production' ? window.shop.title : '');
-    seoHelper.setDescription(process.env.NODE_ENV === 'production' ? window.shop.description : '');
+    this.$hiwebBase.seo.setTitle(process.env.NODE_ENV === 'production' ? window.shop.title : '');
+    this.$hiwebBase.seo.setDescription(process.env.NODE_ENV === 'production' ? window.shop.description : '');
   },
 
   methods: {
@@ -31,7 +30,7 @@ export default {
 
       this.error = null;
       let errorOccurred = false;
-      let products = await api.get('products', { exclude_fields: 'content' }).catch(e => {
+      let products = await this.$hiwebBase.api.get('products', { exclude_fields: 'content' }).catch(e => {
 
         errorOccurred = true;
 
@@ -43,7 +42,7 @@ export default {
         return;
       }
 
-      this.productsJsonApi = new JsonApi(products.data);
+      this.productsJsonApi = new this.$hiwebBase.JsonApi(products.data);
 
     }
 

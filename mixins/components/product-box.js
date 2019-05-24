@@ -1,6 +1,3 @@
-import imageHelper from '@/helpers/image';
-import currencyHelper from '@/helpers/currency';
-
 export default {
 
   props: {
@@ -22,23 +19,6 @@ export default {
       }
     },
 
-    variant: {
-      type: Object,
-      description: 'Default variant of this product',
-      default: function() {
-        return {
-          id: 'variantx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-          type: 'variants',
-          attributes: {
-            title: null,
-            price: 9.99,
-            compare_at_price: 19.99,
-            status: 'available'
-          }
-        };
-      }
-    },
-
     image: {
       description: 'Product thumbnail',
       default: function() {
@@ -47,14 +27,6 @@ export default {
 
       }
     }
-
-  },
-
-  data() {
-
-    return {
-      imageHelper, currencyHelper
-    };
 
   }
 

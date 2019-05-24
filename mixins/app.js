@@ -1,11 +1,10 @@
-import cartHelper from '@/helpers/cart';
-
 export default {
 
   created() {
 
-    // Load cart
-    cartHelper.get();
+    // Dispatch global event
+    window.dispatchEvent(new CustomEvent('app-created'));
+
   }
 
 }

@@ -1,10 +1,14 @@
+import JsonApi from '../helpers/JsonApi';
+
 export default {
+
+  namespaced: true,
 
   state: {
     cart: null,
     cartJsonApi: null,
 
-    loadingCart: false,
+    isLoadingCart: false,
   },
 
   mutations: {
@@ -15,7 +19,7 @@ export default {
     },
 
     loadingCart(state, status) {
-      state.loadingCart = status;
+      state.isLoadingCart = status;
     }
 
   }

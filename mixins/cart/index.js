@@ -1,17 +1,9 @@
-import cartHelper from '@/helpers/cart';
-import currencyHelper from '@/helpers/currency';
-
 export default {
 
-  data() {
+  mounted() {
 
-    return {
-      cartHelper, currencyHelper
-    }
-
-  },
-
-  created() {
+    // Dispatch global event
+    window.dispatchEvent(new CustomEvent('view-cart', this.cart));
 
   },
 
@@ -28,14 +20,6 @@ export default {
   },
 
   computed: {
-
-    cart: function() {
-      return this.$store.state.cart;
-    },
-
-    cartJsonApi: function() {
-      return this.$store.state.cartJsonApi;
-    },
 
     relatedIds: function() {
 

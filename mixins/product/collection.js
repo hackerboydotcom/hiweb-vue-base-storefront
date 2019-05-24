@@ -1,10 +1,3 @@
-import JsonApi from '@/helpers/JsonApi';
-import currencyHelper from '@/helpers/currency';
-import cartHelper from '@/helpers/cart';
-import seoHelper from '@/helpers/seo';
-
-import api from '@/helpers/api';
-
 export default {
 
   data() {
@@ -33,8 +26,12 @@ export default {
     }
 
     // Load collections
-    api.get('collections').then(response => {
-      this.collectionsJsonApi = new JsonApi(response.data);
+    this.$hiwebBase.api.get('collections').then(response => {
+      this.collectionsJsonApi = new this.$hiwebBase.JsonApi(response.data);
+
+      // Dispatch global event
+      window.dispatchEvent(new CustomEvent('view-product-collection', this.collectionsJsonApi));
+
     });
 
     this.loadProducts();
@@ -85,12 +82,12 @@ export default {
 
       }
 
-      api.get('products', query).then(response => {
+      this.$hiwebBase.api.get('products', query).then(response => {
 
         this.isLoading = false;
 
         if (typeof response.data.data !== 'undefined') {
-          this.productsJsonApi = new JsonApi(response.data);
+          this.productsJsonApi = new this.$hiwebBase.JsonApi(response.data);
         }
 
       }).catch(error => {

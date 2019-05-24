@@ -1,7 +1,3 @@
-import api from '@/helpers/api';
-
-import JsonApi from '@/helpers/JsonApi';
-
 export default {
 
   props: ['tagIds', 'excludeIds'],
@@ -22,7 +18,7 @@ export default {
     }
 
     // Load related products
-    api.get('products', {
+    this.$hiwebBase.api.get('products', {
       tag_ids: this.tagIds.join(),
       exclude_ids: this.excludeIds.join(),
       limit: 8
@@ -30,7 +26,7 @@ export default {
 
       this.isLoading = false;
 
-      this.relatedProductsJsonApi = new JsonApi(response.data);
+      this.relatedProductsJsonApi = new this.$hiwebBase.JsonApi(response.data);
 
     }).catch(error => {
       this.isLoading = false;

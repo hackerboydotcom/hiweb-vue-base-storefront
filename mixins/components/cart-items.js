@@ -1,16 +1,4 @@
-import cartHelper from '@/helpers/cart';
-import imageHelper from '@/helpers/image';
-import currencyHelper from '@/helpers/currency';
-
 export default {
-
-  data() {
-
-    return {
-      imageHelper, currencyHelper
-    };
-
-  },
 
   methods: {
 
@@ -32,23 +20,15 @@ export default {
         return;
       }
 
-      cartHelper.add(variantId, qty);
+      this.$hiwebBase.add(variantId, qty);
     },
 
     deleteCartItem(cartItemId) {
-      return cartHelper.delete(cartItemId);
+      return this.$hiwebBase.delete(cartItemId);
     }
   },
 
   computed: {
-
-    cart: function() {
-      return this.$store.state.cart;
-    },
-
-    cartJsonApi: function() {
-      return this.$store.state.cartJsonApi;
-    },
 
     totalPrice: function() {
 

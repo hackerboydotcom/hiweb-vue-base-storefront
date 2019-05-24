@@ -12,6 +12,16 @@ class Options {
     return (this.getOptions() && this.getOptions().pages) ? this.getOptions().pages[page] : null;
   }
 
+  getPageOptions(page) {
+    let pageData = this.getPageData(page);
+    return (pageData && pageData.options) ? pageData.options : {};
+  }
+
+  getPageOption(page, optionKey) {
+    let data = this.getPageOptions(page)[optionKey];
+    return (data && typeof data.value !== 'undefined') ? data : {};
+  }
+
   getPageSections(page) {
     return this.getPageData(page) ? this.getPageData(page).sections : null;
   }
@@ -26,4 +36,4 @@ class Options {
 
 }
 
-export default new Options();
+export default Options;

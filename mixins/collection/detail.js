@@ -1,14 +1,10 @@
-import api from '@/helpers/api';
-
-import JsonApi from '@/helpers/JsonApi';
-import seoHelper from '@/helpers/seo';
-
 export default {
 
   props: ['slug'],
 
   data() {
     return {
+      isLoading: false,
       collectionJsonApi: null,
       
       productsJsonApi: null,
@@ -30,26 +26,33 @@ export default {
 
     loadCollection() {
 
-      this.collection = null;
+      this.isLoading = true;
+      this.collectionJsonApi = null;
 
-      api.get('collections', {
+      this.$hiwebBase.api.get('collections', {
         slug: this.slug
       }).then(response => {
 
         if (typeof response.data.data !== 'undefined') {
-          this.collectionJsonApi = new JsonApi(response.data);
+          this.collectionJsonApi = new this.$hiwebBase.JsonApi(response.data);
         }
 
+        // Dispatch global event
+        window.dispatchEvent(new CustomEvent('view-collection-detail', this.collectionJsonApi));
+
         // SEO
-        seoHelper.setTitle(this.collectionJsonApi.document.data[0].attributes.title);
-        seoHelper.setDescription(this.collectionJsonApi.document.data[0].attributes.description);
+        this.$hiwebBase.seo.setTitle(this.collectionJsonApi.document.data[0].attributes.title);
+        this.$hiwebBase.seo.setDescription(this.collectionJsonApi.document.data[0].attributes.description);
 
         // Load products
         this.loadProducts();
 
+        this.isLoading = false;
+
       }).catch(error => {
 
         this.error = typeof error.response !== 'undefined' ? error.response.data.errors[0].title : error.message;
+        this.isLoading = false;
 
       });
 
@@ -91,10 +94,10 @@ export default {
       }
 
       this.isLoadingProducts = true;
-      api.get('products', query).then(response => {
+      this.$hiwebBase.api.get('products', query).then(response => {
 
         if (typeof response.data.data !== 'undefined' && response.data.data.length) {
-          this.productsJsonApi = new JsonApi(response.data);
+          this.productsJsonApi = new this.$hiwebBase.JsonApi(response.data);
         } else {
           this.productsJsonApi = null;
         }
@@ -130,6 +133,28 @@ export default {
       }
 
       return this.$route.query.page;
+
+    },
+
+    childCollections: function() {
+
+      let collectionsJsonApi = this.collectionsJsonApi;
+
+      if (!collectionsJsonApi) {
+        return [];
+      }
+
+      let childCollections = [];
+
+      for (let i = 0; i < collectionsJsonApi.document.data.length; i++) {
+
+        if (collectionsJsonApi.document.data[i].attributes.parent_id === this.collectionJsonApi.document.data[0].id) {
+          childCollections.push(collectionsJsonApi.document.data[i]);
+        }
+
+      }
+
+      return childCollections;
 
     }
 

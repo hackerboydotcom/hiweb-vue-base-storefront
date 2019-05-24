@@ -1,10 +1,3 @@
-import JsonApi from '@/helpers/JsonApi';
-import currencyHelper from '@/helpers/currency';
-import cartHelper from '@/helpers/cart';
-import seoHelper from '@/helpers/seo';
-
-import api from '@/helpers/api';
-
 export default {
 
   props: ['slug'],
@@ -12,7 +5,6 @@ export default {
   data() {
 
     return {
-      currencyHelper,
       
       productJsonApi: null,
 
@@ -141,8 +133,9 @@ export default {
 
       // If cache exists
       let cacheKey = 'products/' + this.slug + JSON.stringify({ shop_id: (typeof window.shop !== 'undefined' ? window.shop.id : '') });
-      if (typeof this.$store.state.cache[cacheKey] !== 'undefined') {
-        this.productJsonApi = new JsonApi(JSON.parse(this.$store.state.cache[cacheKey]).data);
+      let cache = this.$hiwebBase.cache.get(cacheKey);
+      if (cache !== null) {
+        this.productJsonApi = new this.$hiwebBase.JsonApi(cache);
       }
 
       // data
@@ -152,7 +145,7 @@ export default {
         find = {data: window.productData[this.slug]};
       } else {
 
-        find = await api.get('products/' + this.slug, {}, true).catch(error => {
+        find = await this.$hiwebBase.api.get('products/' + this.slug, {}, true).catch(error => {
           this.error = error;
         });
 
@@ -167,12 +160,15 @@ export default {
         return;
       }
 
-      // SEO helper
-      seoHelper.setTitle(find.data.data.attributes.title);
-      seoHelper.setDescription(find.data.data.attributes.description);
+      // SEO
+      this.$hiwebBase.seo.setTitle(find.data.data.attributes.title);
+      this.$hiwebBase.seo.setDescription(find.data.data.attributes.description);
 
       // Json Api data
-      this.productJsonApi = new JsonApi(find.data);
+      this.productJsonApi = new this.$hiwebBase.JsonApi(find.data);
+
+      // Dispatch global event
+      window.dispatchEvent(new CustomEvent('view-product-detail', this.productJsonApi));
 
       // Set active variant
       this.setActiveVariant();
@@ -235,7 +231,7 @@ export default {
 
       let error = null;
 
-      let cartItem = await cartHelper.add(this.activeVariantId, this.qty).catch(error => {
+      let cartItem = await this.$hiwebBase.cart.add(this.activeVariantId, this.qty).catch(error => {
         error = true;
       });
 

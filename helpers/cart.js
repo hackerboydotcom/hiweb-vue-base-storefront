@@ -1,12 +1,13 @@
-import cookie from '@/helpers/cookie';
-import api from '@/helpers/api';
+import cookie from './cookie';
+import api from './api';
 
-import JsonApi from '@/helpers/JsonApi';
+import JsonApi from './JsonApi';
 
 class Cart {
 
   constructor(store) {
     this.store = store;
+    this.cart = {};
   }
 
   id() {
@@ -18,12 +19,12 @@ class Cart {
     return new Promise(async (resolve, reject) => {
 
       // Loading cart
-      this.store.commit('loadingCart', true);
+      this.store.commit('cart/loadingCart', true);
 
       let cartId = this.id();
 
       if (!cartId) {
-        this.store.commit('loadingCart', false);
+        this.store.commit('cart/loadingCart', false);
         return resolve(null);
       }
 
@@ -38,14 +39,15 @@ class Cart {
         // Remove cart id
         cookie.setCookie('cart-id', '', -1);
 
-        this.store.commit('loadingCart', false);
+        this.store.commit('cart/loadingCart', false);
         return resolve(false);
       }
 
       // Save to store
-      this.store.commit('cart', cart.data);
+      this.store.commit('cart/cart', cart.data);
+      this.cart = cart.data;
 
-      this.store.commit('loadingCart', false);
+      this.store.commit('cart/loadingCart', false);
       return resolve(cart.data);
 
     });
@@ -61,7 +63,7 @@ class Cart {
     return new Promise(async (resolve, reject) => {
 
       // Loading cart
-      this.store.commit('loadingCart', true);
+      this.store.commit('cart/loadingCart', true);
 
       // If doesn't have cart
       let cart;
@@ -72,7 +74,7 @@ class Cart {
         cart = await this.create();
         cartJsonApi = new JsonApi(cart);
 
-      } else if (!this.store.state.cart) {
+      } else if (!this.store.state.cart.cart) {
 
         let loadCart = await this.get();
 
@@ -80,12 +82,12 @@ class Cart {
           return this.add(variantId, qty);
         }
 
-        cart = this.store.state.cart;
-        cartJsonApi = this.store.state.cartJsonApi;
+        cart = this.store.state.cart.cart;
+        cartJsonApi = this.store.state.cart.cartJsonApi;
 
       } else {
-        cart = this.store.state.cart;
-        cartJsonApi = this.store.state.cartJsonApi;
+        cart = this.store.state.cart.cart;
+        cartJsonApi = this.store.state.cart.cartJsonApi;
       }
 
 
@@ -224,13 +226,13 @@ class Cart {
   }
 
   subTotalPrice() {
-    return this.store.state.cart.data.attributes.subtotal;
+    return this.cart.data ? this.cart.data.attributes.subtotal : 0;
   }
 
   totalPrice() {
-    return this.store.state.cart.data.attributes.total;
+    return this.cart.data ? this.cart.data.attributes.total : 0;
   }
 
 }
 
-export default new Cart();
+export default Cart;

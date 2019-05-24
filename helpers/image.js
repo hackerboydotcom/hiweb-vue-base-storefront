@@ -4,14 +4,14 @@ class Image {
 
     let path;
 
-    baseUrl = baseUrl ? baseUrl : 'https://cloud.printabel.com/';
+    baseUrl = baseUrl ? baseUrl : 'https://storage.hiweb.io/';
 
     if (typeof image === 'string') {
         path = baseUrl + image;
     } else if (image && typeof image === 'object' && typeof image.id !== 'undefined') {
         path = baseUrl + image.attributes.path;
     } else {
-        path = require('@/assets/default.png');
+        path = '/assets/default.png';
     }
 
     return path;
@@ -19,7 +19,7 @@ class Image {
 
   resize(image, size, crop) {
 
-    let resizeUrl = 'https://resize.printabel.com/';
+    let resizeUrl = 'https://resize.hiweb.io/';
 
     size = size > 0 ? size : 300;
     crop = crop ? 1 : false;
