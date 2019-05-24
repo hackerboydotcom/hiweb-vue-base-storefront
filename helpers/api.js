@@ -10,7 +10,7 @@ class Api {
   constructor() {
     
     this.env = process.env.NODE_ENV;
-    console.log(this.env);
+
     // Api 
     this.apiUrl = (this.env === 'production') ? window.apiUrl : '';
     this.shopId = (this.env === 'production') ? window.shop.id : '';
@@ -18,11 +18,11 @@ class Api {
   }
 
   get(path, params, loadNew) {
-
+    console.log('log 1');
     if (this.env === 'development') {
       return faker.data('get', path, params);
     }
-
+    console.log('log 1');
     if (typeof params !== 'object') {
       params = {};
     }
