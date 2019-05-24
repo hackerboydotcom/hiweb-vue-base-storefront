@@ -10,7 +10,7 @@ class Api {
   constructor() {
     
     this.env = process.env.NODE_ENV;
-
+    console.log(this.env);
     // Api 
     this.apiUrl = (this.env === 'production') ? window.apiUrl : '';
     this.shopId = (this.env === 'production') ? window.shop.id : '';
