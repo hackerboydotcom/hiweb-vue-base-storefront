@@ -22,7 +22,7 @@ class Api {
     if (this.env === 'development') {
       return faker.data('get', path, params);
     }
-    console.log('log 1');
+    console.log('log 2');
     if (typeof params !== 'object') {
       params = {};
     }
@@ -30,7 +30,7 @@ class Api {
     params.shop_id = this.shopId;
 
     return new Promise((resolve, reject) => {
-
+      console.log('log 3');
       // Cache
       let cacheKey = path + JSON.stringify(params);
       if (!loadNew && !cache.get(cacheKey)) {
@@ -41,10 +41,10 @@ class Api {
         url: this.apiUrl + path,
         data: params,
         dataType: 'json',
-        error: error => {
+        error: error => {console.log('log 4');
           return reject(error);
         },
-        success: result => {
+        success: result => {console.log('log 5');
 
           let data = {
             data: result
@@ -56,7 +56,7 @@ class Api {
           // If products - cache each one
           if (path === 'products') {
             this.cacheProducts(result);
-          }
+          }console.log('log 6');
 
           return resolve(data);
         }
