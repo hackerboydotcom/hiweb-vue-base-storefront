@@ -136,7 +136,7 @@ export default {
       // If cache exists
       let cacheKey = 'products/' + this.slug + JSON.stringify({ shop_id: (typeof window.shop !== 'undefined' ? window.shop.id : '') });
       let cache = this.$hiwebBase.cache.get(cacheKey);
-      if (cache !== null) {
+      if (cache !== null) {console.log(cache);
         this.productJsonApi = new this.$hiwebBase.JsonApi(cache);
         this.isLoading = false;
       }
