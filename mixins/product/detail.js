@@ -138,6 +138,7 @@ export default {
       let cache = this.$hiwebBase.cache.get(cacheKey);
       if (cache !== null) {
         this.productJsonApi = new this.$hiwebBase.JsonApi(cache);
+        this.isLoading = false;
       }
 
       // data
