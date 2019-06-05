@@ -122,7 +122,9 @@ export default {
 
         links = links.concat(collectionLinks);
 
-      } catch (e) {}
+      } catch (e) {
+        console.log('Breadcrumb error: ' + e.message);
+      }
 
       links.push({
         text: this.jsonapi.document.data.attributes.title
