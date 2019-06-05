@@ -5,7 +5,9 @@ export default {
   data() {
     return {
       isLoading: false,
+      
       collectionJsonApi: null,
+      collectionsJsonApi: null,
       
       productsJsonApi: null,
       isLoadingProducts: false,
@@ -16,7 +18,10 @@ export default {
     }
   },
 
-  created() {
+  async created() {
+
+    let collections = await this.$hiwebBase.api.get('collections').catch(e => {});
+    this.collectionsJsonApi = new this.$hiwebBase.JsonApi(collections.data);
 
     // Load collection
     this.loadCollection();
