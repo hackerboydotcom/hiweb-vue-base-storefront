@@ -98,7 +98,7 @@ export default {
 
           collectionLinks.push({
             text: collection.attributes.title,
-            to: { name: 'collections.detail', params: { slug: collection.attributes.slug } }
+            to: { name: 'collection.detail', params: { slug: collection.attributes.slug } }
           });
 
           // Find parent
