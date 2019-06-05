@@ -46,7 +46,7 @@ export default {
       try {
 
         // Load collections
-        const getCollections = await this.$hiwebBase.api('collections').catch(e => {
+        const getCollections = await this.$hiwebBase.api.get('collections').catch(e => {
           throw e.message;
         });
 
