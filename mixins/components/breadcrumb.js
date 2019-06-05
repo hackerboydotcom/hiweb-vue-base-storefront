@@ -41,7 +41,7 @@ export default {
 
     async generateProductLinks() {
 
-      const links = [{ text: 'Home', to: { name: 'home.index' }}];
+      let links = [{ text: 'Home', to: { name: 'home.index' }}];
 
       try {
 
