@@ -20,11 +20,11 @@ export default {
         return;
       }
 
-      this.$hiwebBase.add(variantId, qty);
+      this.$hiwebBase.cart.add(variantId, qty);
     },
 
     deleteCartItem(cartItemId) {
-      return this.$hiwebBase.delete(cartItemId);
+      return this.$hiwebBase.cart.delete(cartItemId);
     }
   },
 
