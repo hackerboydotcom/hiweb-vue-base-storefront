@@ -183,7 +183,7 @@ class Cart {
     return new Promise(async (resolve, reject) => {
 
       // Loading cart
-      this.store.commit('loadingCart', true);
+      this.store.commit('cart/loadingCart', true);
 
       if (!cookie.getCookie('cart-id')) {
         await this.create();
@@ -198,7 +198,7 @@ class Cart {
       }).catch(e => {
 
         // Stop loading cart
-        this.store.commit('loadingCart', false);
+        this.store.commit('cart/loadingCart', false);
 
         return reject(e);
       });
@@ -223,6 +223,16 @@ class Cart {
     this.get();
 
     return true;
+  }
+
+  getCoupon() {
+
+    if (this.store.state.cart.cartJsonApi) {
+      return this.store.state.cart.cartJsonApi.findRelationshipResource(this.cart, 'coupon');
+    }
+
+    return null;
+
   }
 
   subTotalPrice() {
