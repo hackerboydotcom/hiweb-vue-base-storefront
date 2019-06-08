@@ -225,6 +225,29 @@ class Cart {
     return true;
   }
 
+  applyCoupon(code) {
+
+    // Find coupon
+    return new Promise(async (resolve, reject) => {
+
+      // Find coupon
+      let coupon = await api.get('coupons/' + code).catch(e => {
+        return reject(e);
+      });
+
+      // Apply coupon
+      this.update({
+        coupon_id: coupon.data.data.id
+      }).then(response => {
+        return resolve(response);
+      }).catch(e => {
+        return reject(e);
+      });
+
+    });
+
+  }
+
   getCoupon() {
 
     if (this.store.state.cart.cartJsonApi) {
