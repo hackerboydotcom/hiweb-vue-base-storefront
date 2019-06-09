@@ -89,6 +89,9 @@ export default {
 
   install(Vue, { store, options }) {
 
+    // Assign vue to global for custom code usages
+    window.Vue = Vue;
+
     // Register vuex module
     store.registerModule('cart', cartStore);
 
