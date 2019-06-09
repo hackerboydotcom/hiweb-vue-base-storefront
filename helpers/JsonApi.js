@@ -106,7 +106,7 @@ class JsonApi {
         for (let key in query) {
 
           // Break if query doesn't match
-          if (found[key] != query[key]) {
+          if (found.attributes[key] != query[key]) {
             continue;
           }
 
