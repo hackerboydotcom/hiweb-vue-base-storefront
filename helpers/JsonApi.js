@@ -100,6 +100,10 @@ class JsonApi {
 
       let found = this.findIncludedResource(relationshipToFind[i].type, relationshipToFind[i].id);
 
+      if (!found) {
+        continue;
+      }
+
       // If has query
       if (query) {
 
