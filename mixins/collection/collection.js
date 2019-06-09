@@ -18,7 +18,7 @@ export default {
       this.collectionsJsonApi = new this.$hiwebBase.JsonApi(response.data);
 
       // Dispatch global event
-      window.dispatchEvent(new CustomEvent('view-collection-collection', this.collectionsJsonApi));
+      window.dispatchEvent(new CustomEvent('view-collection-collection', { detail: this.collectionsJsonApi }));
 
       this.isLoading = false;
 

@@ -171,7 +171,7 @@ export default {
       this.productJsonApi = new this.$hiwebBase.JsonApi(find.data);
 
       // Dispatch global event
-      window.dispatchEvent(new CustomEvent('view-product-detail', this.productJsonApi));
+      window.dispatchEvent(new CustomEvent('view-product-detail', { detail: this.productJsonApi }));
 
       // Set active variant
       this.setActiveVariant();

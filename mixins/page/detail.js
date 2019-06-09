@@ -33,7 +33,7 @@ export default {
         this.isLoading = false;
 
         // Dispatch global event
-        window.dispatchEvent(new CustomEvent('view-page-detail', this.pageJsonApi));
+        window.dispatchEvent(new CustomEvent('view-page-detail', { detail: this.pageJsonApi }));
 
       }).catch(error => {
         this.isLoading = false;

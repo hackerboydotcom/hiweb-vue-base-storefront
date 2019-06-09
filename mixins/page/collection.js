@@ -43,7 +43,7 @@ export default {
         }
 
         // Dispatch global event
-        window.dispatchEvent(new CustomEvent('view-page-collection', this.pagesJsonApi));
+        window.dispatchEvent(new CustomEvent('view-page-collection', {detail: this.pagesJsonApi }));
 
       }).catch(error => {
         this.isLoading = false;

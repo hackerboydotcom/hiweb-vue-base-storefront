@@ -120,7 +120,7 @@ export default {
               window.options = options;
               
               // Dispatch event
-              window.dispatchEvent(new CustomEvent('options-updated', options));
+              window.dispatchEvent(new CustomEvent('options-updated', { detail: options }));
 
             } 
 
@@ -158,6 +158,9 @@ export default {
     base.cart.get();
 
     Vue.prototype.$hiwebBase = base;
+
+    // Attach to window global variable for global code usages
+    window.$hiwebBase = base;
 
   }
 

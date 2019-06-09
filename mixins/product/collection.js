@@ -30,7 +30,7 @@ export default {
       this.collectionsJsonApi = new this.$hiwebBase.JsonApi(response.data);
 
       // Dispatch global event
-      window.dispatchEvent(new CustomEvent('view-product-collection', this.collectionsJsonApi));
+      window.dispatchEvent(new CustomEvent('view-product-collection', { detail: this.collectionsJsonApi }));
 
     });
 

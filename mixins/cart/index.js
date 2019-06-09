@@ -3,7 +3,29 @@ export default {
   mounted() {
 
     // Dispatch global event
-    window.dispatchEvent(new CustomEvent('view-cart', this.cart));
+    window.dispatchEvent(new CustomEvent('view-cart', { detail: 
+
+      new Promise(async resolve => {
+
+        // Wait for cart
+        let waitForCart = setInterval(() => {
+
+          // Cart is loading
+          if (this.$store.state.cart.loadingCart) {
+            return;
+          }
+
+          // Cart loaded
+          clearInterval(waitForCart);
+
+          // Return cart data
+          return resolve(this.cart);
+
+        }, 100);
+
+      })
+
+    }));
 
   },
 

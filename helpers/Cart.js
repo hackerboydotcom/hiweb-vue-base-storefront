@@ -251,7 +251,7 @@ class Cart {
   getCoupon() {
 
     if (this.store.state.cart.cartJsonApi) {
-      return this.store.state.cart.cartJsonApi.findRelationshipResource(this.cart, 'coupon');
+      return this.store.state.cart.cartJsonApi.findRelationshipResource(this.cart.data, 'coupon');
     }
 
     return null;

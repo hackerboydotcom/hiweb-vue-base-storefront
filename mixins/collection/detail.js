@@ -43,7 +43,7 @@ export default {
         }
 
         // Dispatch global event
-        window.dispatchEvent(new CustomEvent('view-collection-detail', this.collectionJsonApi));
+        window.dispatchEvent(new CustomEvent('view-collection-detail', { detail: this.collectionJsonApi }));
 
         // SEO
         this.$hiwebBase.seo.setTitle(this.collectionJsonApi.document.data[0].attributes.title);
