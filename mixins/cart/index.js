@@ -10,8 +10,10 @@ export default {
         // Wait for cart
         let waitForCart = setInterval(() => {
 
-          // Cart is loading
-          if (this.$store.state.cart.loadingCart) {
+          // If cart is null
+          if (!this.$hiwebBase.cookie.getCookie('cart-id')) {
+            return resolve(null);
+          } else if (!this.cart) { // Cart is loading
             return;
           }
 
