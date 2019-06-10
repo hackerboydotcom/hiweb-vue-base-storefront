@@ -37,6 +37,8 @@ import ProductsDetailMixin from './mixins/product/detail';
 import ProductsDetailImagesMixin from './mixins/product/detail-components/images';
 import ProductsDetailOptionMixin from './mixins/product/detail-components/option';
 
+import { deepClone } from 'lodash';
+
 const mixins = {
 
   app: appMixin,
@@ -105,7 +107,7 @@ export default {
 
     // Export vue to global
     base.makeVue = function(params) {
-      return new Vue(params);
+      return deepClone(new Vue(params));
     };
 
     // Inject mixin global event
