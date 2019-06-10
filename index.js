@@ -87,10 +87,7 @@ export default {
 
   routes, mixins,
 
-  install(Vue, { store, options }) {console.log('debug');
-
-    // Export Vue instance to window
-    window.Vue = Vue;
+  install(Vue, { store, options }) {
 
     // Register vuex module
     store.registerModule('cart', cartStore);
@@ -159,6 +156,9 @@ export default {
 
     // Load cart
     base.cart.get();
+
+    // Export vue to global
+    base.Vue = Vue;
 
     Vue.prototype.$hiwebBase = base;
 
