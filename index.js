@@ -1,5 +1,3 @@
-import VueDefault from 'vue';
-
 import api from './helpers/api';
 import cache from './helpers/cache';
 import Cart from './helpers/Cart';
@@ -9,6 +7,7 @@ import image from './helpers/image';
 import JsonApi from './helpers/JsonApi';
 import Options from './helpers/Options';
 import seo from './helpers/seo';
+import event from './helpers/event';
 
 import cartStore from './store/cart';
 
@@ -82,7 +81,7 @@ const mixins = {
 };
 
 const base = {
-	api, cache, cookie, currency, image, JsonApi, seo
+	api, cache, cookie, currency, image, JsonApi, seo, event
 }
 
 export default {
@@ -90,6 +89,9 @@ export default {
   routes, mixins,
 
   install(Vue, { store, options }) {
+
+    // Add store to base
+    base.store = store;
 
     // Register vuex module
     store.registerModule('cart', cartStore);
@@ -103,7 +105,9 @@ export default {
     base.options = optionsObject;
 
     // Export vue to global
-    base.Vue = VueDefault;
+    base.makeVue = params => {
+      return new Vue(params);
+    };
 
     // Inject mixin global event
     Vue.mixin({
