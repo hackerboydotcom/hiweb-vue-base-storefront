@@ -1,3 +1,5 @@
+import VueDefault from 'vue';
+
 import api from './helpers/api';
 import cache from './helpers/cache';
 import Cart from './helpers/Cart';
@@ -36,9 +38,6 @@ import ProductsCollectionMixin from './mixins/product/collection';
 import ProductsDetailMixin from './mixins/product/detail';
 import ProductsDetailImagesMixin from './mixins/product/detail-components/images';
 import ProductsDetailOptionMixin from './mixins/product/detail-components/option';
-
-// Clone deep
-import { cloneDeep } from 'lodash';
 
 const mixins = {
 
@@ -104,7 +103,7 @@ export default {
     base.options = optionsObject;
 
     // Export vue to global
-    base.Vue = cloneDeep(Vue);
+    base.Vue = VueDefault;
 
     // Inject mixin global event
     Vue.mixin({
