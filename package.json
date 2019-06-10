@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/hackerboydotcom/hiweb-vue-base-storefront#readme",
   "dependencies": {
-    "jquery": "^3.4.1",
-    "lodash": "^4.17.11"
+    "jquery": "^3.4.1"
   }
 }
