@@ -105,7 +105,7 @@ export default {
     base.options = optionsObject;
 
     // Export vue to global
-    base.makeVue = params => {
+    base.makeVue = function(params) {
       return new Vue(params);
     };
 
