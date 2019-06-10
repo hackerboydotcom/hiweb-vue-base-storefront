@@ -87,7 +87,7 @@ export default {
 
   routes, mixins,
 
-  install(Vue, { store, options }) {
+  install(Vue, { store, options }) {console.log('debug');
 
     // Register vuex module
     store.registerModule('cart', cartStore);
