@@ -37,6 +37,9 @@ import ProductsDetailMixin from './mixins/product/detail';
 import ProductsDetailImagesMixin from './mixins/product/detail-components/images';
 import ProductsDetailOptionMixin from './mixins/product/detail-components/option';
 
+// Clone deep
+import { cloneDeep } from 'lodash';
+
 const mixins = {
 
   app: appMixin,
@@ -100,6 +103,9 @@ export default {
     const optionsObject = new Options(options);
     base.options = optionsObject;
 
+    // Export vue to global
+    base.Vue = cloneDeep(Vue);
+
     // Inject mixin global event
     Vue.mixin({
 
@@ -156,9 +162,6 @@ export default {
 
     // Load cart
     base.cart.get();
-
-    // Export vue to global
-    base.Vue = Vue;
 
     Vue.prototype.$hiwebBase = base;
 
