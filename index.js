@@ -96,9 +96,8 @@ export default {
 
     window.hiwebBaseInstalled = true;
 
-    // Assign vue to global for custom code usages
-    window.Vue = Vue;
-
+    // Assign a clone of vue to global for custom code usages
+    window.Vue = Object.assign({}, Vue);
 
     // Register vuex module
     store.registerModule('cart', cartStore);
