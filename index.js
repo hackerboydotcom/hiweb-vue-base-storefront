@@ -89,6 +89,9 @@ export default {
 
   install(Vue, { store, options }) {console.log('debug');
 
+    // Export Vue instance to window
+    window.Vue = Vue;
+
     // Register vuex module
     store.registerModule('cart', cartStore);
 
