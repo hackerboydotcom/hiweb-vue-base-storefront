@@ -11,7 +11,7 @@ export default {
         let waitForCart = setInterval(() => {
 
           // If cart is null
-          if (!this.$hiwebBase.cookie.getCookie('cart-id')) {
+          if (!this.$hiwebBase.cart.id()) {
             return resolve(null);
           } else if (!this.cart) { // Cart is loading
             return;

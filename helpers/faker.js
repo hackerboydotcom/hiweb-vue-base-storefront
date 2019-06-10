@@ -42,6 +42,13 @@ class Faker {
           let data = await import('../fake-data/page.js');
           return resolve(data.default);
         }
+
+        // Get coupon
+        if (path.includes('coupons/')) {
+          let data = await import('../fake-data/coupon.js');
+          return resolve(data.default);
+        }
+
       }
 
       // Fake data for post

@@ -67,7 +67,7 @@ class JsonApi {
   * @param string Relationship name
   * @return array
   */
-  findRelationshipResources(resource, relationship, query) {
+  findRelationshipResources(resource, relationship, query, noCache) {
 
     if (typeof resource.relationships === 'undefined' || typeof resource.relationships[relationship] === 'undefined') {
       return null;
@@ -75,7 +75,7 @@ class JsonApi {
 
     let relationships = resource.relationships[relationship].data;
     let relationshipToFind;
-
+    
     if (relationships instanceof Array) {
 
       if (!relationships.length) {
@@ -98,11 +98,13 @@ class JsonApi {
 
     for (let i = 0; i < relationshipToFind.length; i++) {
 
-      let found = this.findIncludedResource(relationshipToFind[i].type, relationshipToFind[i].id);
+      let found = this.findIncludedResource(relationshipToFind[i].type, relationshipToFind[i].id, noCache);
 
       if (!found) {
         continue;
       }
+
+      let queryMatches = true;
 
       // If has query
       if (query) {
@@ -110,7 +112,8 @@ class JsonApi {
         for (let key in query) {
 
           // Break if query doesn't match
-          if (found.attributes[key] != query[key]) {
+          if (found.attributes[key] !== query[key]) {
+            queryMatches = false;
             continue;
           }
 
@@ -118,7 +121,11 @@ class JsonApi {
 
       }
 
-      returnData.push(found);
+      if (!queryMatches) {
+        continue;
+      }
+
+      returnData.push(found); 
     }
 
     return returnData;
