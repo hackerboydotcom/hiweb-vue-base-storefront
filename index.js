@@ -134,6 +134,20 @@ export default {
 
         }
 
+        // Router push global event
+        if (typeof window.globalRouterPushEvent === 'undefined') {
+
+          // Event register
+          window.globalRouterPushEvent = true;
+
+          window.addEventListener('router-push', event => {
+
+            this.$router.push(event.detail);
+
+          });
+
+        }
+
         // Force update on options change
         window.addEventListener('options-updated', () => {
           this.$forceUpdate();
