@@ -206,7 +206,7 @@ export default {
 
       }
 
-      let variants = this.productJsonApi.findRelationshipResources(this.productJsonApi.document.data, 'variants', { id: this.activeVariantId });
+      let variants = this.productJsonApi.findRelationshipResources(this.productJsonApi.document.data, 'variants');
 
       for (let i = 0; i < variants.length; i++) {
 
