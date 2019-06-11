@@ -2,32 +2,28 @@ export default {
 
   mounted() {
 
-    // Dispatch global event
-    window.dispatchEvent(new CustomEvent('view-cart', { detail: 
+    // Wait for cart
+    let waitForCart = setInterval(() => {
 
-      new Promise(async resolve => {
+      // If cart is null
+      if (!this.$hiwebBase.cart.id()) {
+        
+        clearInterval(waitForCart);
 
-        // Wait for cart
-        let waitForCart = setInterval(() => {
+        // Dispatch global event
+        window.dispatchEvent(new CustomEvent('view-cart', { detail: null }));
 
-          // If cart is null
-          if (!this.$hiwebBase.cart.id()) {
-            return resolve(null);
-          } else if (!this.cart) { // Cart is loading
-            return;
-          }
+      } else if (!this.cart) { // Cart is loading
+        return;
+      }
 
-          // Cart loaded
-          clearInterval(waitForCart);
+      // Cart loaded
+      clearInterval(waitForCart);
 
-          // Return cart data
-          return resolve(this.cart);
+      // Return cart data
+      window.dispatchEvent(new CustomEvent('view-cart', { detail: this.cart }));
 
-        }, 100);
-
-      })
-
-    }));
+    }, 100);
 
   },
 
