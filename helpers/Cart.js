@@ -48,7 +48,7 @@ class Cart {
       this.cart = cart.data;
 
       // Trigger global event
-      window.dispatchEvent('cart-loaded', new CustomEvent({ detail: this.cart }));
+      window.dispatchEvent(new CustomEvent('cart-loaded', { detail: this.cart }));
 
       this.store.commit('cart/loadingCart', false);
       return resolve(cart.data);
