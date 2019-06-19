@@ -2,6 +2,10 @@ class Image {
 
   url(image, baseUrl) {
 
+    if (typeof image === 'string' && image.substring(0, 4) === 'http') {
+      return image;
+    }
+
     let path;
 
     baseUrl = baseUrl ? baseUrl : 'https://storage.hiweb.io/';
