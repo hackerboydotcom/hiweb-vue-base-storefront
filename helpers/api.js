@@ -15,6 +15,8 @@ class Api {
     this.apiUrl = (this.env === 'production') ? window.apiUrl : '';
     this.shopId = (this.env === 'production') ? window.shop.id : '';
 
+    this.isLoading = {};
+
   }
 
   get(path, params, loadNew) {
@@ -29,7 +31,7 @@ class Api {
 
     params.shop_id = this.shopId;
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
 
       // Cache
       let cacheKey = path + JSON.stringify(params);
@@ -37,11 +39,42 @@ class Api {
         return resolve(cache.get(cacheKey));
       }
 
+      // If is loading
+      if (this.isLoading[cacheKey]) {
+
+        // Wait for it
+        return await new Promise(done => {
+
+          let wait = setInterval(() => {
+
+            // Loaded
+            if (!this.isLoading[cacheKey]) {
+              
+              // Stop waiting
+              clearInterval(wait);
+
+              return done(this.get(path, params, loadNew));
+            
+            }
+
+          }, 100);
+
+        });
+
+      }
+
+      // Set as is loading
+      this.isLoading[cacheKey] = true;
+
       $.ajax({
         url: this.apiUrl + path,
         data: params,
         dataType: 'json',
         error: error => {
+
+          // Stop loading status
+          this.isLoading[cacheKey] = false;
+
           return reject(error);
         },
         success: result => {
@@ -57,6 +90,9 @@ class Api {
           if (path === 'products') {
             this.cacheProducts(result);
           }
+
+          // Stop loading status
+          this.isLoading[cacheKey] = false;
 
           return resolve(data);
         }
