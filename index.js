@@ -7,6 +7,7 @@ import image from './helpers/image';
 import JsonApi from './helpers/JsonApi';
 import Options from './helpers/Options';
 import seo from './helpers/seo';
+import router from './helpers/router';
 
 import cartStore from './store/cart';
 
@@ -80,7 +81,7 @@ const mixins = {
 };
 
 const base = {
-	api, cache, cookie, currency, image, JsonApi, seo
+	api, cache, cookie, currency, image, JsonApi, seo, router
 }
 
 export default {

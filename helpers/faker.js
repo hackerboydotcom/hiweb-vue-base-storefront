@@ -49,6 +49,12 @@ class Faker {
           return resolve(data.default);
         }
 
+        // Get menu links
+        if (path === 'menu_links') {
+          let data = await import('../fake-data/menu_links.js');
+          return resolve(data.default);
+        }
+
       }
 
       // Fake data for post
