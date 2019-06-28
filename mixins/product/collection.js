@@ -34,6 +34,8 @@ export default {
 
     });
 
+    this.$hiwebBase.seo.setTitle('All Products' + (this.page > 1 ? ' - Page ' + this.page : ''));
+
     this.loadProducts();
 
   },
