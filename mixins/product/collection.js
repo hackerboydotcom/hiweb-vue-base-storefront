@@ -105,10 +105,10 @@ export default {
     page: function() {
 
       if (typeof this.$route.query.page !== 'undefined') {
-        return 1;
+        return this.$route.query.page;
       }
 
-      return this.$route.query.page;
+      return 1;
 
     }
 
