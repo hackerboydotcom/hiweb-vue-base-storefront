@@ -119,12 +119,12 @@ export default {
 
   watch: {
 
-    slug: function() {
-      this.loadCollection();
-    },
-
     sortingMode: function() {
       this.loadProducts();
+    },
+
+    '$route': function() {
+      this.loadCollection();
     }
 
   },
