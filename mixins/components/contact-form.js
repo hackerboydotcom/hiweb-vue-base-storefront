@@ -52,9 +52,10 @@ export default {
         } catch (e) {
 
           this.errors.push({ title: 'Failed to send contact message' });
-          this.isSending = false;
 
         };
+  
+        this.isSending = false;
 
       });
 
