@@ -15,7 +15,7 @@ class Image {
     } else if (image && typeof image === 'object' && typeof image.id !== 'undefined') {
         path = baseUrl + image.attributes.path;
     } else {
-        path = '/assets/default.png';
+        path = baseUrl + 'assets/default.png';
     }
 
     return path;
