@@ -5,6 +5,9 @@ class Cache {
     this.storage = window.localStorage;
     this.prefix = 'hvbs-';
 
+    // Cache should be loaded again if refresh browser
+    this.loaded = {};
+
   }
 
   put(key, value, minutes) {
@@ -24,6 +27,7 @@ class Cache {
 
     // Save cache
     this.storage.setItem(this.prefix + key, JSON.stringify(cacheData));
+    this.loaded[this.prefix + key] = true;
 
     return true;
 
@@ -31,7 +35,7 @@ class Cache {
 
   get(key, defaultValue) {
 
-    if (!this.storage) {
+    if (!this.storage || !this.loaded[this.prefix + key]) {
       return defaultValue ? defaultValue : null;
     }
 

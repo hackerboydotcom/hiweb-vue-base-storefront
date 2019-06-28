@@ -32,6 +32,7 @@ export default {
         data: {
           type: 'contacts',
           attributes: {
+            shop_id: typeof window.shop !== 'undefined' ? window.shop.id : null,
             name: this.name,
             phone: this.phone,
             email: this.email,

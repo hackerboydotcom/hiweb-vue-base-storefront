@@ -31,7 +31,9 @@
       </div>
 
       <div class="hiweb-contact-form__form__submit">
-        <button class="hiweb-contact-form__form__submit__button" :disabled="isSending" @click="send">Send message</button>
+        <button class="hiweb-contact-form__form__submit__button" :disabled="isSending" @click="send">
+          {{ isSending ? 'Sending' : 'Send message' }}
+        </button>
       </div>
 
     </div>
@@ -84,7 +86,7 @@ export default {
   padding: 10px;
 }
 
-.hiweb-contact-form__form__input--message, .hiweb-contact-form__form__input input, .hiweb-contact-form__form__input textarea {
+.hiweb-contact-form__form__input--message, .hiweb-contact-form__form__input input, .hiweb-contact-form__form__input textarea, .hiweb-contact-form__form__errors, .hiweb-contact-form__form__success {
   width: 100%;
 }
 
