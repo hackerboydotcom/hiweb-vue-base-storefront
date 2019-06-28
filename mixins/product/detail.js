@@ -98,6 +98,10 @@ export default {
 
     setActiveVariant: function() {
 
+      // If no options and has one variant
+      if (this.productJsonApi.document.data.relationships.variants.length === 1) {
+        this.activeVariant = this.productJsonApi.findRelationshipResource(this.productJsonApi.document.data, 'variants');
+      }
       
     },
 
